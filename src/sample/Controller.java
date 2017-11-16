@@ -3,6 +3,8 @@ package sample;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.awt.event.ActionEvent;
+
 public class Controller {
 
     @FXML
@@ -42,5 +44,16 @@ public class Controller {
     private Button none;
 
     @FXML
-    void initialize() {}
+    void initialize() {
+        currentTemp.setOnAction((event) -> {
+            currentTempLabel.setText(tempInput.getText());
+        });
+        desiredTemp.setOnAction((event) ->  {
+            desiredTempLabel.setText(tempInput.getText());
+        });
+        outsideTemp.setOnAction((event) ->  {
+            outsideTempLabel.setText(tempInput.getText());
+        });
+    }
+
 }

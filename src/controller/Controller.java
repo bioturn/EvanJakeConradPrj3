@@ -1,9 +1,8 @@
-package sample;
+package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
-import java.awt.event.ActionEvent;
+import objects.NumberTextField;
 
 public class Controller {
 
@@ -53,6 +52,18 @@ public class Controller {
         });
         outsideTemp.setOnAction((event) ->  {
             outsideTempLabel.setText(tempInput.getText());
+        });
+        heat.setOnAction((event) ->  {
+            currentDeviceLabel.setText("Heater is Working");
+        });
+        fan.setOnAction((event) ->  {
+            currentDeviceLabel.setText("Fan is Working");
+        });
+        ac.setOnAction((event) ->  {
+            currentDeviceLabel.setText("AC is Working");
+        });
+        none.setOnAction((event) ->  {
+            currentDeviceLabel.setText("No Device Selected");
         });
     }
 

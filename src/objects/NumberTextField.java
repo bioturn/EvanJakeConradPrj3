@@ -1,3 +1,7 @@
+/**
+ * @author Conrad Thompson, Evan Wall, Jake Flodquist
+ * @Copyright (c) 2017
+ */
 package objects;
 
 import javafx.scene.control.TextField;

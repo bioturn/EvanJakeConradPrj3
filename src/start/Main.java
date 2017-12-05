@@ -1,3 +1,7 @@
+/**
+ * @author Conrad Thompson, Evan Wall, Jake Flodquist
+ * @Copyright (c) 2017
+ */
 package start;
 
 import javafx.application.Application;
@@ -11,7 +15,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/view/tempControlUnit.fxml"));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Temperature Control Unit");
         primaryStage.setScene(new Scene(root, 800, 200));
         primaryStage.show();
     }

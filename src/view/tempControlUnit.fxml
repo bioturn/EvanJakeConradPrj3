@@ -1,9 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
  @author Conrad Thompson, Evan Wall, Jake Flodquist
  @Copyright (c) 2017
 -->
-<?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 

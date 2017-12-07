@@ -7,9 +7,28 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import objects.NumberTextField;
-import states.TemperatureControlUnitContext;
 
-public class Controller {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
+import static controller.Controller.events.*;
+
+public class Controller extends Observable{
+    private static Controller instance;
+
+    public enum events{TEMP_CHANGED_EVENT, HEATER_CALL, AC_CALL, FAN_CALL, NO_DEVICE_CALL};
+
+    public static Controller instance(){
+        if (instance == null){
+            instance = new Controller();
+        }
+        return instance;
+    }
+
+    private List<Observer> observers = new ArrayList<Observer>();
+
     @FXML
     private NumberTextField tempInput;
 
@@ -48,32 +67,75 @@ public class Controller {
 
     @FXML
     void initialize() {
-        TemperatureControlUnitContext temperatureControlUnitContext = new TemperatureControlUnitContext();
-
         currentTemp.setOnAction((event) -> {
-            currentTempLabel.setText(tempInput.getText());
+            setIndoorTemperature(Integer.parseInt(tempInput.getText()));
+            currentTempLabel.setText(String.valueOf(getIndoorTemperature()));
+       //     notifyObservers(TEMP_CHANGED_EVENT);
+
         });
         desiredTemp.setOnAction((event) ->  {
-            desiredTempLabel.setText(tempInput.getText());
+            setDesiredTemperature(Integer.parseInt(tempInput.getText()));
+            desiredTempLabel.setText(String.valueOf(getDesiredTemperature()));
+         //   notifyObservers(TEMP_CHANGED_EVENT);
         });
         outsideTemp.setOnAction((event) ->  {
-            outsideTempLabel.setText(tempInput.getText());
+            setOutdoorTemperature(Integer.parseInt(tempInput.getText()));
+            outsideTempLabel.setText(String.valueOf(getOutdoorTemperature()));
+         //   notifyObservers(TEMP_CHANGED_EVENT);
         });
         heat.setOnAction((event) ->  {
             currentDeviceLabel.setText("Heater is Working");
-            temperatureControlUnitContext.stateMethod(TemperatureControlUnitContext.States.HEATER_WORKING);
+            notifyObservers(HEATER_CALL);
         });
         fan.setOnAction((event) ->  {
             currentDeviceLabel.setText("Fan is Working");
-           temperatureControlUnitContext.stateMethod(TemperatureControlUnitContext.States.FAN_WORKING);
+            notifyObservers(FAN_CALL);
         });
         ac.setOnAction((event) ->  {
             currentDeviceLabel.setText("AC is Working");
-            temperatureControlUnitContext.stateMethod(TemperatureControlUnitContext.States.AC_WORKING);
+            notifyObservers(AC_CALL);
         });
         none.setOnAction((event) ->  {
             currentDeviceLabel.setText("No Device Selected");
-            temperatureControlUnitContext.stateMethod(TemperatureControlUnitContext.States.NO_DEVICE_WORKING);
+            notifyObservers(NO_DEVICE_CALL);
         });
+    }
+
+    public void notifyObservers(Object arg) {
+        for (Observer observer: observers) {
+            observer.update(this, arg);
+        }
+    }
+
+    // code to do with temperatures
+
+    public static final long ONE_MINUTE = 1000; //TODO make 60000
+    private int desiredTemperature = 0;
+    private int indoorTemperature = 0;
+    private int outdoorTemperature = 0;
+
+
+    public int getDesiredTemperature() {
+        return desiredTemperature;
+    }
+
+    public void setDesiredTemperature(int desiredTemperature) {
+        this.desiredTemperature = desiredTemperature;
+    }
+
+    public int getIndoorTemperature() {
+        return indoorTemperature;
+    }
+
+    public void setIndoorTemperature(int indoorTemperature) {
+        this.indoorTemperature = indoorTemperature;
+    }
+
+    public int getOutdoorTemperature() {
+        return outdoorTemperature;
+    }
+
+    public void setOutdoorTemperature(int outdoorTemperature) {
+        this.outdoorTemperature = outdoorTemperature;
     }
 }

@@ -14,4 +14,8 @@ public class NoDeviceState extends TemperatureState{
     public void leave() {
 
     }
+
+    @Override
+    public void run() {
+    }
 }

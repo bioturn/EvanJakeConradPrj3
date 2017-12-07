@@ -7,9 +7,9 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import objects.NumberTextField;
+import states.TemperatureControlUnitContext;
 
 public class Controller {
-
     @FXML
     private NumberTextField tempInput;
 
@@ -48,6 +48,8 @@ public class Controller {
 
     @FXML
     void initialize() {
+        TemperatureControlUnitContext temperatureControlUnitContext = new TemperatureControlUnitContext();
+
         currentTemp.setOnAction((event) -> {
             currentTempLabel.setText(tempInput.getText());
         });
@@ -59,16 +61,19 @@ public class Controller {
         });
         heat.setOnAction((event) ->  {
             currentDeviceLabel.setText("Heater is Working");
+            temperatureControlUnitContext.stateMethod(TemperatureControlUnitContext.States.HEATER_WORKING);
         });
         fan.setOnAction((event) ->  {
             currentDeviceLabel.setText("Fan is Working");
+           temperatureControlUnitContext.stateMethod(TemperatureControlUnitContext.States.FAN_WORKING);
         });
         ac.setOnAction((event) ->  {
             currentDeviceLabel.setText("AC is Working");
+            temperatureControlUnitContext.stateMethod(TemperatureControlUnitContext.States.AC_WORKING);
         });
         none.setOnAction((event) ->  {
             currentDeviceLabel.setText("No Device Selected");
+            temperatureControlUnitContext.stateMethod(TemperatureControlUnitContext.States.NO_DEVICE_WORKING);
         });
     }
-
 }

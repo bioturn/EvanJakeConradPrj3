@@ -8,23 +8,23 @@
 
 <?import objects.NumberTextField?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="162.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="162.0" prefWidth="861.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
    <children>
-      <Button fx:id="outsideTemp" layoutX="445.0" layoutY="10.0" mnemonicParsing="false"  text="Set Outside Temperature" />
       <NumberTextField fx:id="tempInput" layoutX="92.0" layoutY="10.0" text="0" />
-      <Label layoutX="14.0" layoutY="14.0" text="Temperature" />
-      <Label layoutX="14.0" layoutY="118.0" text="Current Temp:" />
+      <Label layoutX="10.0" layoutY="14.0" text="Temperature" />
+      <Label layoutX="10.0" layoutY="118.0" text="Current Temp:" />
       <Label layoutX="227.0" layoutY="118.0" text="Desired Temp:" />
-      <Label fx:id="currentTempLabel" layoutX="97.0" layoutY="118.0" text="0" />
-      <Label fx:id="desiredTempLabel" layoutX="316.0" layoutY="118.0" text="0" />
+      <Label fx:id="currentTempLabel" layoutX="99.0" layoutY="118.0" text="0" />
+      <Label fx:id="desiredTempLabel" layoutX="317.0" layoutY="118.0" text="0" />
       <Label layoutX="422.0" layoutY="118.0" text="Outside Temp:" />
       <Label fx:id="currentDeviceLabel" layoutX="589.0" layoutY="118.0" text="No Device is on" />
       <Label fx:id="outsideTempLabel" layoutX="512.0" layoutY="118.0" text="0" />
       <Button fx:id="none" layoutX="589.0" layoutY="65.0" mnemonicParsing="false" text="No Device" />
       <Button fx:id="fan" layoutX="422.0" layoutY="65.0" mnemonicParsing="false" text="Fan" />
       <Button fx:id="ac" layoutX="227.0" layoutY="65.0" mnemonicParsing="false" text="AC" />
-      <Button fx:id="heat" layoutX="14.0" layoutY="69.0" mnemonicParsing="false" text="Heater" />
-      <Button fx:id="desiredTemp" layoutX="599.0" layoutY="10.0" mnemonicParsing="false"  text="Set Desired Temperature" />
+      <Button fx:id="heat" layoutX="10.0" layoutY="69.0" mnemonicParsing="false" text="Heater" />
+      <Button fx:id="desiredTemp" layoutX="629.0" layoutY="10.0" mnemonicParsing="false"  text="Set Desired Temperature" />
+      <Button fx:id="outsideTemp" layoutX="465.0" layoutY="10.0" mnemonicParsing="false"  text="Set Outside Temperature" />
       <Button fx:id="currentTemp" layoutX="257.0" layoutY="10.0" mnemonicParsing="false" text="Set Current Room Temperature" />
    </children>
 </AnchorPane>

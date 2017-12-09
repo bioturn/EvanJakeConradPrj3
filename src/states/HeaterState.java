@@ -24,16 +24,17 @@ public class HeaterState extends TemperatureState implements Observer{
 
     @Override
     public void run() {
-        Clock.instance().addObserver(this);
-        if (controller.getDesiredTemperature() > controller.getIndoorTemperature() + 3){
+        System.out.println("Inside Heater State");
+        while (controller.getDesiredTemperature() > controller.getIndoorTemperature() + 3) {
+            System.out.println("Inside while loop");
             temperatureRise();
+            try {
+                Thread.sleep(controller.ONE_MINUTE);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            adjustForOutdoorTemp();
         }
-        try {
-            Thread.sleep(controller.ONE_MINUTE);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        adjustForOutdoorTemp();
     }
 
     @Override

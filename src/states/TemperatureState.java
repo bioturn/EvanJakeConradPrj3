@@ -25,6 +25,7 @@ public abstract class TemperatureState {
 
     public void temperatureRise(){
         controller.setIndoorTemperature(controller.getIndoorTemperature()+1);
+        controller.setCurrentTemp();
     }
     public void temperatureFall(){
         controller.setIndoorTemperature(controller.getIndoorTemperature()-1);

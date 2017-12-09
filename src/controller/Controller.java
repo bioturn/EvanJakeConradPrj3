@@ -87,8 +87,8 @@ public class Controller extends Observable{
         });
         heat.setOnAction((event) ->  {
             currentDeviceLabel.setText("Heater is Working");
-//            heaterState = new HeaterState();
-//            heaterState.run();
+            heaterState = new HeaterState();
+            heaterState.run();
             notifyObservers(HEATER_CALL);
         });
         fan.setOnAction((event) ->  {
@@ -105,6 +105,10 @@ public class Controller extends Observable{
         });
     }
 
+    public void setCurrentTemp() {
+        currentTempLabel.setText(String.valueOf(getIndoorTemperature()));
+    }
+
     public void notifyObservers(Object arg) {
         for (Observer observer: observers) {
             observer.update(this, arg);
@@ -114,32 +118,32 @@ public class Controller extends Observable{
     // code to do with temperatures
 
     public static final long ONE_MINUTE = 1000; //TODO make 60000
-    private int desiredTemperature = 0;
-    private int indoorTemperature = 0;
-    private int outdoorTemperature = 0;
+    private int desiredTemperature;
+    private int indoorTemperature;
+    private int outdoorTemperature;
 
 
     public int getDesiredTemperature() {
         return desiredTemperature;
     }
 
-    public void setDesiredTemperature(int desiredTemperature) {
-        this.desiredTemperature = desiredTemperature;
+    public void setDesiredTemperature(int desiredTemp) {
+        desiredTemperature = desiredTemp;
     }
 
     public int getIndoorTemperature() {
         return indoorTemperature;
     }
 
-    public void setIndoorTemperature(int indoorTemperature) {
-        this.indoorTemperature = indoorTemperature;
+    public void setIndoorTemperature(int indoorTemp) {
+        indoorTemperature = indoorTemp;
     }
 
     public int getOutdoorTemperature() {
         return outdoorTemperature;
     }
 
-    public void setOutdoorTemperature(int outdoorTemperature) {
-        this.outdoorTemperature = outdoorTemperature;
+    public void setOutdoorTemperature(int outdoorTemp) {
+        outdoorTemperature = outdoorTemp;
     }
 }

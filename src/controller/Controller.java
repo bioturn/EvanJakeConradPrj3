@@ -7,6 +7,7 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import objects.NumberTextField;
+import states.HeaterState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import static controller.Controller.events.*;
 
 public class Controller extends Observable{
     private static Controller instance;
+    private static HeaterState heaterState;
 
     public enum events{TEMP_CHANGED_EVENT, HEATER_CALL, AC_CALL, FAN_CALL, NO_DEVICE_CALL};
 
@@ -85,6 +87,8 @@ public class Controller extends Observable{
         });
         heat.setOnAction((event) ->  {
             currentDeviceLabel.setText("Heater is Working");
+//            heaterState = new HeaterState();
+//            heaterState.run();
             notifyObservers(HEATER_CALL);
         });
         fan.setOnAction((event) ->  {

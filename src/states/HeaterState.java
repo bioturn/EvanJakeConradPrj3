@@ -4,7 +4,12 @@
  */
 package states;
 
-public class HeaterState extends TemperatureState{
+import timer.Clock;
+
+import java.util.Observable;
+import java.util.Observer;
+
+public class HeaterState extends TemperatureState implements Observer{
     @Override
     public void enter() {
         while(true){
@@ -19,6 +24,7 @@ public class HeaterState extends TemperatureState{
 
     @Override
     public void run() {
+        Clock.instance().addObserver(this);
         if (controller.getDesiredTemperature() > controller.getIndoorTemperature() + 3){
             temperatureRise();
         }
@@ -28,5 +34,10 @@ public class HeaterState extends TemperatureState{
             e.printStackTrace();
         }
         adjustForOutdoorTemp();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        Clock.instance().addObserver(this);
     }
 }

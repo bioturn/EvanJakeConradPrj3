@@ -5,6 +5,8 @@
 
 package controller;
 
+import display.TemperatureDisplay;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -14,7 +16,8 @@ public class TemperatureControlUnitContext implements Observer {
 
     public enum States {HEATER_WORKING, AC_WORKING, FAN_WORKING, NO_DEVICE_WORKING}
     private States currentState;
-    private static TemperatureControlUnitContext instance;
+    public static TemperatureControlUnitContext instance;
+    TemperatureDisplay display;
 
     private static TemperatureControlUnitContext instance(){
         if (instance == null){
@@ -41,6 +44,10 @@ public class TemperatureControlUnitContext implements Observer {
                 changeCurrentState(NO_DEVICE_WORKING);
                 break;
         }
+    }
+
+    public void setDisplay(TemperatureDisplay display) {
+        this.display = display;
     }
 
     public void changeCurrentState(States state){

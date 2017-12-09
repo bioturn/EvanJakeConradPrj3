@@ -4,6 +4,8 @@
  */
 package start;
 
+import controller.TemperatureControlUnitContext;
+import display.TemperatureDisplay;
 import javafx.application.Application;
 import states.Clock;
 import display.GuiDisplay;
@@ -18,5 +20,13 @@ public class Main{
                 Application.launch(GuiDisplay.class, null);
             }
         }.start();
+        try {
+            while (GuiDisplay.getInstance() == null) {
+                Thread.sleep(1000);
+            }
+        } catch (InterruptedException ie) {
+        }
+        TemperatureDisplay display = GuiDisplay.getInstance();
+        TemperatureControlUnitContext.instance.setDisplay(display);
     }
 }

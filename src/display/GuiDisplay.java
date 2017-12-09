@@ -8,7 +8,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class GuiDisplay extends Application{
+public class GuiDisplay extends Application {
+
+    private static TemperatureDisplay display;
+
+    public static TemperatureDisplay getInstance() {
+        return display;
+    }
 
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/view/tempControlUnit.fxml"));

@@ -90,7 +90,7 @@ public class Controller implements Observer{
         });
         heat.setOnAction((event) ->  {
             changeState(HEATER_CALL);
-            heaterState.run();
+            heaterState.enter();
             updateDeviceLabel();
             updateCurrentTempLabel();
         });
@@ -154,8 +154,10 @@ public class Controller implements Observer{
         }
     }
 
+    //This is the method which should update the gui each time a state "run" loop is gone through.
     @Override
     public void update(Observable o, Object arg) {
-       // updateDeviceLabel();
+       updateDeviceLabel();
+       updateCurrentTempLabel();
     }
 }

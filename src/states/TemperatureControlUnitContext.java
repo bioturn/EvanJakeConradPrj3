@@ -54,7 +54,7 @@ public class TemperatureControlUnitContext extends Observable
 
     public void setIsWorkingNotIdling(modes newMode) {
         workingOrIdling = newMode.toString();
-        notifyObservers();
+        //notifyObservers();
     }
 
     public void notifyObservers() {

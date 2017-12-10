@@ -20,7 +20,7 @@ public class ACState extends TemperatureState{
 
     @Override
     public void leave() {
-        TemperatureControlUnitContext.instance().changeCurrentState(NoDeviceState.instance());
+        //TemperatureControlUnitContext.instance().changeCurrentState(NoDeviceState.instance());
     }
 
     @Override

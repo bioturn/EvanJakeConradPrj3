@@ -29,7 +29,4 @@ public class GuiDisplay extends Application {
         });
 
     }
-
-
-
 }

@@ -39,9 +39,9 @@ public class HeaterState extends TemperatureState implements Observer {
     @Override
     public void enter() {
         try{
-            while(true){
+       //     while(true){
                 run();
-            }
+        //    }
         }catch (Exception e){
             leave();
         }
@@ -49,13 +49,13 @@ public class HeaterState extends TemperatureState implements Observer {
 
     @Override
     public void leave() {
-        TemperatureControlUnitContext.instance().changeCurrentState(NoDeviceState.instance());
+        //TemperatureControlUnitContext.instance().changeCurrentState(NoDeviceState.instance());
     }
 
     @Override
     public void run() {
         TemperatureControlUnitContext.instance().setIsWorkingNotIdling(idling);
-        if (model.getDesiredTemperature() > model.getIndoorTemperature() + 3) {
+        while (model.getDesiredTemperature() > model.getIndoorTemperature() + 3) {
             TemperatureControlUnitContext.instance().setIsWorkingNotIdling(working);
             controller.temperatureRise(2);
             try {

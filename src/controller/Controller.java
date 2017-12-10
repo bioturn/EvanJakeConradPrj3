@@ -74,6 +74,7 @@ public class Controller implements Observer{
         model.setIndoorTemperature(0);
         model.setOutdoorTemperature(0);
         model.setDesiredTemperature(0);
+
         currentDeviceLabel.setText("We haven't begun");
         currentTemp.setOnAction((event) -> {
             model.setIndoorTemperature(Integer.parseInt(tempInput.getText()));
@@ -103,7 +104,6 @@ public class Controller implements Observer{
         none.setOnAction((event) ->  {
             currentDeviceLabel.setText("No Device Selected");
         });
-
     }
 
     private void updateCurrentTempLabel() {
@@ -126,10 +126,11 @@ public class Controller implements Observer{
 
     public void temperatureRise(int amount){
         model.setIndoorTemperature(model.getIndoorTemperature()+amount);
-        //updateCurrentTempLabel();
+       // updateCurrentTempLabel();
     }
     public void temperatureFall(int amount){
         model.setIndoorTemperature(model.getIndoorTemperature()-amount);
+      //  updateCurrentTempLabel();
     }
     public void adjustForOutdoorTemp() {
         if (model.getIndoorTemperature() < model.getOutdoorTemperature()){
@@ -157,7 +158,12 @@ public class Controller implements Observer{
     //This is the method which should update the gui each time a state "run" loop is gone through.
     @Override
     public void update(Observable o, Object arg) {
-       updateDeviceLabel();
+        try {
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        updateDeviceLabel();
        updateCurrentTempLabel();
     }
 }

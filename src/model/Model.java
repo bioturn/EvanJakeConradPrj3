@@ -1,18 +1,22 @@
 package model;
 
+import display.GuiDisplay;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by evanwall on 12/9/17.
  */
-public class Model extends Observable {
+public class Model {
     private static Model instance;
 
     /**
      * Private to implement the singleton pattern.
      */
     private Model() {
-
     }
 
     /**

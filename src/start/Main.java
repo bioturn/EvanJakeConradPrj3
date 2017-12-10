@@ -10,6 +10,9 @@ import javafx.application.Application;
 import states.Clock;
 import display.GuiDisplay;
 
+/*
+* Spins up our program
+ */
 public class Main{
 
     public static void main(String[] args) {

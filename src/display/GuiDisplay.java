@@ -8,6 +8,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * This class represents the GUI, which updates as states and temperatures change.
+ */
 public class GuiDisplay extends Application {
 
     private static TemperatureDisplay display;

@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import model.Model;
 import objects.NumberTextField;
+import states.*;
 import states.HeaterState;
 import states.TemperatureControlUnitContext;
 import states.TemperatureState;
@@ -17,6 +18,9 @@ import java.util.Observer;
 
 import static controller.Controller.events.*;
 
+/**
+ * This class controls the states, through the context, the model, and the gui. The controller in the MVC
+ */
 public class Controller implements Observer{
     private static Controller instance;
     private static  TemperatureControlUnitContext tcuContext = TemperatureControlUnitContext.instance();
@@ -91,7 +95,7 @@ public class Controller implements Observer{
         });
         heat.setOnAction((event) ->  {
             changeState(HEATER_CALL);
-            heaterState.enter();
+            tcuContext.getCurrentState().run();
             updateDeviceLabel();
             updateCurrentTempLabel();
         });
@@ -99,7 +103,10 @@ public class Controller implements Observer{
             currentDeviceLabel.setText("Fan is Working");
         });
         ac.setOnAction((event) ->  {
+            changeState(AC_CALL);
+            tcuContext.getCurrentState().run();
             currentDeviceLabel.setText("AC is Working");
+            updateCurrentTempLabel();
         });
         none.setOnAction((event) ->  {
             currentDeviceLabel.setText("No Device Selected");
@@ -113,7 +120,16 @@ public class Controller implements Observer{
     @FXML
     private void updateDeviceLabel() {
         if ( tcuContext.getCurrentState() instanceof HeaterState) {
-            currentDeviceLabel.setText("Heater ");
+            currentDeviceLabel.setText("Heater is idling");
+        }
+        if ( tcuContext.getCurrentState() instanceof ACState) {
+            currentDeviceLabel.setText("AC ");
+        }
+        if ( tcuContext.getCurrentState() instanceof FanState) {
+            currentDeviceLabel.setText("Fan ");
+        }
+        if ( tcuContext.getCurrentState() instanceof NoDeviceState) {
+            currentDeviceLabel.setText("No Device ");
         }
         if (!tcuContext.getCurrentMode().equals(TemperatureState.modes.noDevice)){
             if ( tcuContext.getCurrentMode().equals(TemperatureState.modes.idling)){
@@ -156,6 +172,12 @@ public class Controller implements Observer{
     }
 
     //This is the method which should update the gui each time a state "run" loop is gone through.
+    // IF this worked, our entire program would have worked.
+    /*
+    the idea here is, any state updates a value - this notifies the controller.
+    The controller then updates the gui, and then tells the context to have currentState().run()
+    and thats the beautiful loop which would work
+     */
     @Override
     public void update(Observable o, Object arg) {
         try {

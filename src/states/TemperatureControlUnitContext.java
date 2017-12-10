@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * This class is the Context, which holds the current states and their mode "idle" or "working"
+ */
 public class TemperatureControlUnitContext extends Observable
 {
 

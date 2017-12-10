@@ -1,3 +1,9 @@
+/**
+ * @author Conrad Thompson, Evan Wall, Jake Flodquist
+ * @Copyright (c) 2017
+ *
+ */
+
 package model;
 
 import display.GuiDisplay;
@@ -8,7 +14,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by evanwall on 12/9/17.
+ * The important data to be put into the GUI, and manipulated by the Controller.
  */
 public class Model {
     private static Model instance;

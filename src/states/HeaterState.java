@@ -12,6 +12,11 @@ import java.util.Observer;
 
 import static states.TemperatureState.modes.*;
 
+/**
+ *  This state represents a Heater, which idles when the temperature suffices, and works to heat when it is too cool
+ *
+ */
+
 public class HeaterState extends TemperatureState implements Observer {
 
     private static HeaterState instance;

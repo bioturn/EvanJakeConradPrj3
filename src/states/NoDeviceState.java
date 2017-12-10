@@ -4,6 +4,9 @@
  */
 package states;
 
+/*
+ * This class is no device state. When we dont want to operate any AC, heat, or fan.
+ */
 public class NoDeviceState extends TemperatureState{
 
     private static NoDeviceState instance;

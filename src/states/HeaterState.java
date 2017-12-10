@@ -53,7 +53,7 @@ public class HeaterState extends TemperatureState implements Observer {
         TemperatureControlUnitContext.instance().setIsWorkingNotIdling(idling);
         while (model.getDesiredTemperature() > model.getIndoorTemperature() + 3) {
             TemperatureControlUnitContext.instance().setIsWorkingNotIdling(working);
-            controller.temperatureRise();
+            controller.temperatureRise(2);
             try {
                 Thread.sleep(model.ONE_MINUTE);
             } catch (InterruptedException e) {

@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import model.Model;
 import objects.NumberTextField;
-import states.ACState;
 import states.HeaterState;
 import states.TemperatureControlUnitContext;
 import states.TemperatureState;
@@ -71,6 +70,10 @@ public class Controller implements Observer{
 
     @FXML
     void initialize() {
+        //initialize values
+        model.setIndoorTemperature(0);
+        model.setOutdoorTemperature(0);
+        model.setDesiredTemperature(0);
         currentDeviceLabel.setText("We haven't begun");
         currentTemp.setOnAction((event) -> {
             model.setIndoorTemperature(Integer.parseInt(tempInput.getText()));
@@ -89,6 +92,7 @@ public class Controller implements Observer{
             changeState(HEATER_CALL);
             heaterState.run();
             updateDeviceLabel();
+            updateCurrentTempLabel();
         });
         fan.setOnAction((event) ->  {
             currentDeviceLabel.setText("Fan is Working");
@@ -99,6 +103,11 @@ public class Controller implements Observer{
         none.setOnAction((event) ->  {
             currentDeviceLabel.setText("No Device Selected");
         });
+
+    }
+
+    private void updateCurrentTempLabel() {
+        currentTempLabel.setText(String.valueOf(model.getIndoorTemperature()));
     }
 
     @FXML
@@ -115,24 +124,20 @@ public class Controller implements Observer{
         }
     }
 
-    public void temperatureRise(){
-        model.setIndoorTemperature(model.getIndoorTemperature()+1);
-        setCurrentTempLabel();
+    public void temperatureRise(int amount){
+        model.setIndoorTemperature(model.getIndoorTemperature()+amount);
+        //updateCurrentTempLabel();
     }
-    public void temperatureFall(){
-        model.setIndoorTemperature(model.getIndoorTemperature()-1);
+    public void temperatureFall(int amount){
+        model.setIndoorTemperature(model.getIndoorTemperature()-amount);
     }
     public void adjustForOutdoorTemp() {
         if (model.getIndoorTemperature() < model.getOutdoorTemperature()){
-            temperatureRise();
+            temperatureRise(1);
         }
         else if (model.getIndoorTemperature() > model.getOutdoorTemperature()){
-            temperatureFall();
+            temperatureFall(1);
         }
-    }
-
-    public void setCurrentTempLabel() {
-        currentTempLabel.setText(String.valueOf(model.getIndoorTemperature()));
     }
 
     private void changeState(events theEvent){

@@ -20,7 +20,7 @@ public class ACState extends TemperatureState{
     @Override
     public void run() {
         if (model.getDesiredTemperature() < model.getIndoorTemperature() + 3){
-            controller.temperatureFall();
+            controller.temperatureFall(2);
         }
         try {
             Thread.sleep(model.ONE_MINUTE);

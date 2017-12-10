@@ -5,13 +5,21 @@
 
 package states;
 
+import controller.Controller;
 import states.TemperatureState.modes;
 import display.TemperatureDisplay;
 
-public class TemperatureControlUnitContext
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
+public class TemperatureControlUnitContext extends Observable
 {
-    String workingOrIdling;
-    TemperatureDisplay display;
+
+    private List<Observer> observers = new ArrayList<Observer>();
+    private String workingOrIdling;
+    private TemperatureDisplay display;
     private TemperatureState currentState;
     private static TemperatureControlUnitContext instance;
 
@@ -21,6 +29,7 @@ public class TemperatureControlUnitContext
     private TemperatureControlUnitContext() {
         currentState = NoDeviceState.instance();
         changeCurrentState(currentState);
+        observers.add(Controller.instance());
     }
 
     /**
@@ -45,6 +54,13 @@ public class TemperatureControlUnitContext
 
     public void setIsWorkingNotIdling(modes newMode) {
         workingOrIdling = newMode.toString();
+        notifyObservers();
+    }
+
+    public void notifyObservers() {
+        for (Observer observer: observers) {
+            observer.update(this, workingOrIdling);
+        }
     }
 
     public modes getCurrentMode() {

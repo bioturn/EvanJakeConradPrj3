@@ -13,14 +13,12 @@ import states.HeaterState;
 import states.TemperatureControlUnitContext;
 import states.TemperatureState;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import static controller.Controller.events.*;
 
-public class Controller extends Observable{
+public class Controller implements Observer{
     private static Controller instance;
     private static  TemperatureControlUnitContext tcuContext = TemperatureControlUnitContext.instance();
     private static HeaterState heaterState = HeaterState.instance();
@@ -34,8 +32,6 @@ public class Controller extends Observable{
         }
         return instance;
     }
-
-    private List<Observer> observers = new ArrayList<Observer>();
 
     @FXML
     private NumberTextField tempInput;
@@ -79,39 +75,33 @@ public class Controller extends Observable{
         currentTemp.setOnAction((event) -> {
             model.setIndoorTemperature(Integer.parseInt(tempInput.getText()));
             currentTempLabel.setText(String.valueOf(model.getIndoorTemperature()));
-       //     notifyObservers(TEMP_CHANGED_EVENT);
 
         });
         desiredTemp.setOnAction((event) ->  {
             model.setDesiredTemperature(Integer.parseInt(tempInput.getText()));
             desiredTempLabel.setText(String.valueOf(model.getDesiredTemperature()));
-         //   notifyObservers(TEMP_CHANGED_EVENT);
         });
         outsideTemp.setOnAction((event) ->  {
             model.setOutdoorTemperature(Integer.parseInt(tempInput.getText()));
             outsideTempLabel.setText(String.valueOf(model.getOutdoorTemperature()));
-         //   notifyObservers(TEMP_CHANGED_EVENT);
         });
         heat.setOnAction((event) ->  {
             changeState(HEATER_CALL);
             heaterState.run();
             updateDeviceLabel();
-
         });
         fan.setOnAction((event) ->  {
             currentDeviceLabel.setText("Fan is Working");
-            notifyObservers(FAN_CALL);
         });
         ac.setOnAction((event) ->  {
             currentDeviceLabel.setText("AC is Working");
-            notifyObservers(AC_CALL);
         });
         none.setOnAction((event) ->  {
             currentDeviceLabel.setText("No Device Selected");
-            notifyObservers(NO_DEVICE_CALL);
         });
     }
 
+    @FXML
     private void updateDeviceLabel() {
         if ( tcuContext.getCurrentState() instanceof HeaterState) {
             currentDeviceLabel.setText("Heater ");
@@ -145,13 +135,6 @@ public class Controller extends Observable{
         currentTempLabel.setText(String.valueOf(model.getIndoorTemperature()));
     }
 
-    public void notifyObservers(Object arg) {
-        for (Observer observer: observers) {
-
-        } // TODO remove ??
-
-    }
-
     private void changeState(events theEvent){
         switch(theEvent){
             case AC_CALL:
@@ -164,5 +147,10 @@ public class Controller extends Observable{
             case NO_DEVICE_CALL:
                 break;
         }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+       // updateDeviceLabel();
     }
 }

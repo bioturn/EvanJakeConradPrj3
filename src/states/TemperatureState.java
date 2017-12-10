@@ -8,9 +8,12 @@ import controller.Controller;
 import events.HeaterEvent;
 import model.Model;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import static states.TemperatureState.modes.*;
 
-public abstract class TemperatureState {
+public abstract class TemperatureState extends Observable {
 
     public Model model = Model.instance();
     Controller controller = Controller.instance();

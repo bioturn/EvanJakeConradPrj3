@@ -5,7 +5,7 @@
 package states;
 
 import events.HeaterEvent;
-import timer.Clock;
+import timer.Notifiable;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -15,6 +15,11 @@ import static states.TemperatureState.modes.*;
 public class HeaterState extends TemperatureState implements Observer {
 
     private static HeaterState instance;
+    private Notifiable client;
+
+    public enum Events {
+        HEATER_TICKED_EVENT
+    };
 
 
     /**
@@ -60,17 +65,20 @@ public class HeaterState extends TemperatureState implements Observer {
             controller.temperatureRise(2);
             try {
                 Thread.sleep(model.ONE_MINUTE);
+                setChanged();
+                notifyObservers(Events.HEATER_TICKED_EVENT);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             controller.adjustForOutdoorTemp();
+
         }
         TemperatureControlUnitContext.instance().setIsWorkingNotIdling(idling);
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        Clock.instance().addObserver(this);
+        client.handleEvent(new HeaterEvent());
     }
 
     @Override

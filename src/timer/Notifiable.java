@@ -1,5 +1,10 @@
 package timer;
 
-public interface Notifiable {
+import events.HeaterEvent;
 
+public interface Notifiable {
+/**
+ * Process heater ticks
+ */
+public void handleEvent(HeaterEvent event);
 }

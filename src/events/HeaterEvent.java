@@ -11,7 +11,7 @@ public class HeaterEvent extends FatherEvent{
     /**
      * Constructor is private to implement the singleton pattern.
      */
-    private HeaterEvent() {
+    public HeaterEvent() {
     }
 
     /**

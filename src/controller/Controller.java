@@ -75,7 +75,7 @@ public class Controller implements Observer{
         model.setOutdoorTemperature(0);
         model.setDesiredTemperature(0);
 
-        currentDeviceLabel.setText("We haven't begun");
+        currentDeviceLabel.setText("No Device Selected");
         currentTemp.setOnAction((event) -> {
             model.setIndoorTemperature(Integer.parseInt(tempInput.getText()));
             currentTempLabel.setText(String.valueOf(model.getIndoorTemperature()));
@@ -91,6 +91,7 @@ public class Controller implements Observer{
         });
         heat.setOnAction((event) ->  {
             changeState(HEATER_CALL);
+            HeaterState.instance().addObserver(this);
             heaterState.enter();
             updateDeviceLabel();
             updateCurrentTempLabel();
@@ -106,7 +107,7 @@ public class Controller implements Observer{
         });
     }
 
-    private void updateCurrentTempLabel() {
+    public void updateCurrentTempLabel() {
         currentTempLabel.setText(String.valueOf(model.getIndoorTemperature()));
     }
 
@@ -115,7 +116,7 @@ public class Controller implements Observer{
         if ( tcuContext.getCurrentState() instanceof HeaterState) {
             currentDeviceLabel.setText("Heater ");
         }
-        if (!tcuContext.getCurrentMode().equals(TemperatureState.modes.noDevice)){
+        if (!(tcuContext.getCurrentMode().equals(TemperatureState.modes.noDevice))){
             if ( tcuContext.getCurrentMode().equals(TemperatureState.modes.idling)){
                 currentDeviceLabel.setText(currentDeviceLabel.getText().concat("idling"));
             }else if ( tcuContext.getCurrentMode().equals(TemperatureState.modes.working)){

@@ -27,7 +27,6 @@ public class GuiDisplay extends Application {
                 System.exit(0);
             }
         });
-
     }
 
 }

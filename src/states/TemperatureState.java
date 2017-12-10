@@ -5,10 +5,18 @@
 package states;
 
 import controller.Controller;
+import events.HeaterEvent;
+import model.Model;
+
+import static states.TemperatureState.modes.*;
 
 public abstract class TemperatureState {
 
+    public Model model = Model.instance();
     Controller controller = Controller.instance();
+
+    public enum modes {working, idling, noDevice}
+    public modes currentMode = noDevice;
 
     /**
      * Initializes the state
@@ -23,19 +31,14 @@ public abstract class TemperatureState {
     //actions which must occur. In particular, the outside temperature affecting the inside temperature.
     public abstract void run();
 
-    public void temperatureRise(){
-        controller.setIndoorTemperature(controller.getIndoorTemperature()+1);
-        controller.setCurrentTemp();
+    public modes getCurrentMode() {
+        return currentMode;
     }
-    public void temperatureFall(){
-        controller.setIndoorTemperature(controller.getIndoorTemperature()-1);
+    public void setCurrentMode(modes newMode){
+        currentMode = newMode;
     }
-    public void adjustForOutdoorTemp() {
-        if (controller.getIndoorTemperature() < controller.getOutdoorTemperature()){
-            temperatureRise();
-        }
-        else if (controller.getIndoorTemperature() > controller.getOutdoorTemperature()){
-            temperatureFall();
-        }
+    public void handleEvent(HeaterEvent event) {
+
     }
+
 }

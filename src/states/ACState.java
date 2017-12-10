@@ -19,14 +19,14 @@ public class ACState extends TemperatureState{
 
     @Override
     public void run() {
-        if (controller.getDesiredTemperature() < controller.getIndoorTemperature() + 3){
-            temperatureFall();
+        if (model.getDesiredTemperature() < model.getIndoorTemperature() + 3){
+            controller.temperatureFall();
         }
         try {
-            Thread.sleep(controller.ONE_MINUTE);
+            Thread.sleep(model.ONE_MINUTE);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        adjustForOutdoorTemp();
+        controller.adjustForOutdoorTemp();
     }
 }

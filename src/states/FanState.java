@@ -23,11 +23,10 @@ public class FanState extends TemperatureState{
 
         //then sleep
         try {
-            Thread.sleep(controller.ONE_MINUTE);
+            Thread.sleep(model.ONE_MINUTE);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        adjustForOutdoorTemp();
-
+        controller.adjustForOutdoorTemp();
     }
 }

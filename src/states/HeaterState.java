@@ -4,12 +4,38 @@
  */
 package states;
 
+import events.HeaterEvent;
 import timer.Clock;
 
 import java.util.Observable;
 import java.util.Observer;
 
-public class HeaterState extends TemperatureState implements Observer{
+import static states.TemperatureState.modes.*;
+
+public class HeaterState extends TemperatureState implements Observer {
+
+    private static HeaterState instance;
+
+
+    /**
+     * Private constructor to make the class a singleton
+     */
+    private HeaterState() {
+
+    }
+
+    /**
+     * Returns the singleton object
+     *
+     * @return - the only instance of the class
+     */
+    public static HeaterState instance() {
+        if (instance == null) {
+            instance = new HeaterState();
+        }
+        return instance;
+    }
+
     @Override
     public void enter() {
         while(true){
@@ -19,26 +45,32 @@ public class HeaterState extends TemperatureState implements Observer{
 
     @Override
     public void leave() {
-
+        TemperatureControlUnitContext.instance().changeCurrentState(NoDeviceState.instance());
     }
 
     @Override
     public void run() {
-        System.out.println("Inside Heater State");
-        while (controller.getDesiredTemperature() > controller.getIndoorTemperature() + 3) {
-            System.out.println("Inside while loop");
-            temperatureRise();
+        TemperatureControlUnitContext.instance().setIsWorkingNotIdling(idling);
+        while (model.getDesiredTemperature() > model.getIndoorTemperature() + 3) {
+            TemperatureControlUnitContext.instance().setIsWorkingNotIdling(working);
+            controller.temperatureRise();
             try {
-                Thread.sleep(controller.ONE_MINUTE);
+                Thread.sleep(model.ONE_MINUTE);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            adjustForOutdoorTemp();
+            controller.adjustForOutdoorTemp();
         }
+        TemperatureControlUnitContext.instance().setIsWorkingNotIdling(idling);
     }
 
     @Override
     public void update(Observable o, Object arg) {
         Clock.instance().addObserver(this);
+    }
+
+    @Override
+    public void handleEvent(HeaterEvent event) {
+
     }
 }

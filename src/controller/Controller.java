@@ -6,8 +6,12 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import model.Model;
 import objects.NumberTextField;
+import states.ACState;
 import states.HeaterState;
+import states.TemperatureControlUnitContext;
+import states.TemperatureState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +22,9 @@ import static controller.Controller.events.*;
 
 public class Controller extends Observable{
     private static Controller instance;
-    private static HeaterState heaterState;
+    private static  TemperatureControlUnitContext tcuContext = TemperatureControlUnitContext.instance();
+    private static HeaterState heaterState = HeaterState.instance();
+    private Model model = Model.instance();
 
     public enum events{TEMP_CHANGED_EVENT, HEATER_CALL, AC_CALL, FAN_CALL, NO_DEVICE_CALL};
 
@@ -69,27 +75,28 @@ public class Controller extends Observable{
 
     @FXML
     void initialize() {
+        currentDeviceLabel.setText("We haven't begun");
         currentTemp.setOnAction((event) -> {
-            setIndoorTemperature(Integer.parseInt(tempInput.getText()));
-            currentTempLabel.setText(String.valueOf(getIndoorTemperature()));
+            model.setIndoorTemperature(Integer.parseInt(tempInput.getText()));
+            currentTempLabel.setText(String.valueOf(model.getIndoorTemperature()));
        //     notifyObservers(TEMP_CHANGED_EVENT);
 
         });
         desiredTemp.setOnAction((event) ->  {
-            setDesiredTemperature(Integer.parseInt(tempInput.getText()));
-            desiredTempLabel.setText(String.valueOf(getDesiredTemperature()));
+            model.setDesiredTemperature(Integer.parseInt(tempInput.getText()));
+            desiredTempLabel.setText(String.valueOf(model.getDesiredTemperature()));
          //   notifyObservers(TEMP_CHANGED_EVENT);
         });
         outsideTemp.setOnAction((event) ->  {
-            setOutdoorTemperature(Integer.parseInt(tempInput.getText()));
-            outsideTempLabel.setText(String.valueOf(getOutdoorTemperature()));
+            model.setOutdoorTemperature(Integer.parseInt(tempInput.getText()));
+            outsideTempLabel.setText(String.valueOf(model.getOutdoorTemperature()));
          //   notifyObservers(TEMP_CHANGED_EVENT);
         });
         heat.setOnAction((event) ->  {
-            currentDeviceLabel.setText("Heater is Working");
-            heaterState = new HeaterState();
+            changeState(HEATER_CALL);
             heaterState.run();
-            notifyObservers(HEATER_CALL);
+            updateDeviceLabel();
+
         });
         fan.setOnAction((event) ->  {
             currentDeviceLabel.setText("Fan is Working");
@@ -105,45 +112,57 @@ public class Controller extends Observable{
         });
     }
 
-    public void setCurrentTemp() {
-        currentTempLabel.setText(String.valueOf(getIndoorTemperature()));
+    private void updateDeviceLabel() {
+        if ( tcuContext.getCurrentState() instanceof HeaterState) {
+            currentDeviceLabel.setText("Heater ");
+        }
+        if (!tcuContext.getCurrentMode().equals(TemperatureState.modes.noDevice)){
+            if ( tcuContext.getCurrentMode().equals(TemperatureState.modes.idling)){
+                currentDeviceLabel.setText(currentDeviceLabel.getText().concat("idling"));
+            }else if ( tcuContext.getCurrentMode().equals(TemperatureState.modes.working)){
+                currentDeviceLabel.setText(currentDeviceLabel.getText().concat("working"));
+            }
+        }
+    }
+
+    public void temperatureRise(){
+        model.setIndoorTemperature(model.getIndoorTemperature()+1);
+        setCurrentTempLabel();
+    }
+    public void temperatureFall(){
+        model.setIndoorTemperature(model.getIndoorTemperature()-1);
+    }
+    public void adjustForOutdoorTemp() {
+        if (model.getIndoorTemperature() < model.getOutdoorTemperature()){
+            temperatureRise();
+        }
+        else if (model.getIndoorTemperature() > model.getOutdoorTemperature()){
+            temperatureFall();
+        }
+    }
+
+    public void setCurrentTempLabel() {
+        currentTempLabel.setText(String.valueOf(model.getIndoorTemperature()));
     }
 
     public void notifyObservers(Object arg) {
         for (Observer observer: observers) {
-            observer.update(this, arg);
+
+        } // TODO remove ??
+
+    }
+
+    private void changeState(events theEvent){
+        switch(theEvent){
+            case AC_CALL:
+                break;
+            case FAN_CALL:
+                break;
+            case HEATER_CALL:
+                TemperatureControlUnitContext.instance().changeCurrentState(heaterState);
+                break;
+            case NO_DEVICE_CALL:
+                break;
         }
-    }
-
-    // code to do with temperatures
-
-    public static final long ONE_MINUTE = 1000; //TODO make 60000
-    private int desiredTemperature;
-    private int indoorTemperature;
-    private int outdoorTemperature;
-
-
-    public int getDesiredTemperature() {
-        return desiredTemperature;
-    }
-
-    public void setDesiredTemperature(int desiredTemp) {
-        desiredTemperature = desiredTemp;
-    }
-
-    public int getIndoorTemperature() {
-        return indoorTemperature;
-    }
-
-    public void setIndoorTemperature(int indoorTemp) {
-        indoorTemperature = indoorTemp;
-    }
-
-    public int getOutdoorTemperature() {
-        return outdoorTemperature;
-    }
-
-    public void setOutdoorTemperature(int outdoorTemp) {
-        outdoorTemperature = outdoorTemp;
     }
 }
